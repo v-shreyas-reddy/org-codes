@@ -1,6 +1,6 @@
 /* eslint-disable @lwc/lwc/no-api-reassignments */
 import { LightningElement, track, wire, api } from "lwc";
-// import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getPicklistValues, getObjectInfo } from "lightning/uiObjectInfoApi";
 
 // Apex class for insertion
@@ -25,6 +25,17 @@ import SHIFT_TIMINGS from "@salesforce/schema/Resource__c.Shift_Timings__c";
 
 export default class TestCmp extends LightningElement {
   @track resource = {};
+
+  //Toast event function
+  showToast(title, message, variant) {
+    this.dispatchEvent(
+      new ShowToastEvent({
+        title,
+        message,
+        variant
+      })
+    );
+  }
 
   @wire(getObjectInfo, { objectApiName: RESOURCE_OBJECT })
   resourceObj;
@@ -139,9 +150,11 @@ export default class TestCmp extends LightningElement {
         // console.log("Result: " + JSON.stringify(result));
         this.resourceId = result.Id;
         console.log("Resource record ID=====: " + this.resourceId);
+        this.showToast("Success", "Resource saved successfully", "success");
       })
       .catch((error) => {
         console.log("Error while Saving=====> " + JSON.stringify(error));
+        this.showToast("Resource Not Saved", error.body.message, "error");
       });
   }
 }
