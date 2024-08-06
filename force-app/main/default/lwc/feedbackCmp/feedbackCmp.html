@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="Interview Feedback">
+        <div class="slds-p-around_large">
+
+            <div>
+                <h4>Candidate Name</h4>
+                <lightning-input label="Candidate Name" type="text" placeholder="Enter Candidate Name"
+                    variant="label-hidden" onchange={handleCanName}></lightning-input>
+            </div>
+
+            <div>
+                <h4>Status</h4>
+                <template if:true={interviewFeedbackStatus.data}>
+                    <lightning-combobox label="Status" variant="label-hidden"
+                        options={interviewFeedbackStatus.data.values} placeholder="-Select-"
+                        onchange={handleStatus}></lightning-combobox>
+                </template>
+            </div>
+
+            <div>
+                <h4>Solutioning skills</h4>
+                <c-five-star-rating 
+                    onratingchange={handleSolRating} 
+                    total-stars="5" 
+                    size="small"
+                ></c-five-star-rating>
+            </div>
+
+            <div>
+                <h4>Communication skills</h4>
+                <c-five-star-rating 
+                    onratingchange={handleComRating} 
+                    total-stars="5" 
+                    size="small"
+                ></c-five-star-rating>
+            </div>
+
+            <div class="slds-align_absolute-center slds-p-vertical_medium">
+                <lightning-button icon-name="utility:save" variant="success" label="Save"
+                    onclick={handleSaveClick}></lightning-button>
+            </div>
+
+        </div>
+    </lightning-card>
+</template>

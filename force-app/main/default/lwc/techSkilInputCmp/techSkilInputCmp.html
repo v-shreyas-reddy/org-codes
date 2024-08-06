@@ -1,0 +1,46 @@
+<template>
+    <lightning-card title="Technology skills Input Component">
+        <div class="slds-m-left_large slds-m-right_large">
+
+            <h3 class="head">Technology</h3>
+            <lightning-combobox variant="label-hidden" label="Technology" placeholder="Select Technology"
+                options={techOptions} onchange={handleTechChange} value={selectedTechValue}></lightning-combobox>
+            <!-- <p>Selected Value - {selectedTechValue}</p> -->
+
+            <template if:true={showTechnicalStack}>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-text-align_left">
+                        <h3 class="slds-p-top_x-small">skills</h3>
+                    </div>
+                    <div class="slds-col slds-size_1-of-12 slds-align_absolute-center">
+                        <lightning-icon class="slds-m-left_xx-small" icon-name="utility:add" title="Add more"
+                            onclick={handleAddMoreClick}></lightning-icon>
+                    </div>
+                </div>
+                <div class="container">
+                <template for:each={skills} for:item="skill" for:index="index">
+                    <div key={skill.key} class="slds-grid slds-gutters">
+                        <div class="slds-col">
+
+                            <lightning-input class="slds-p-vertical_x-small" variant="label-hidden" type="text"
+                                label="Skill" placeholder="Enter your skill" onchange={handleSkillChange}
+                                value={skill.value} data-index={index}></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-12 slds-align_absolute-center">
+                            <lightning-icon class="slds-m-left_xx-small" icon-name="utility:delete" title="Delete"
+                                onclick={handleDeleteClick} data-index={index}></lightning-icon>
+                        </div>
+                    </div>
+                </template>
+                </div>
+
+
+            </template>
+
+            <!-- <div>
+                <p>Collected Values: {dataValues}</p>
+            </div> -->
+
+        </div>
+    </lightning-card>
+</template>

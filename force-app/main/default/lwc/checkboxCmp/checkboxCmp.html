@@ -1,0 +1,37 @@
+<template>
+    <lightning-card title="Static values Checkbox component">
+        <div class="slds-m-left_large slds-m-right_large">
+
+            <lightning-combobox placeholder="Select Technology" label="Technology" options={technologyOptions}
+                onchange={handleTechnologyChange}>
+            </lightning-combobox>
+
+            <template if:true={showTechnicalStack}>
+                <div class="container slds-p-around_small">
+                    <lightning-checkbox-group label="Technical Stack" options={technicalStackOptions}
+                        value={selectedTechnicalStack} onchange={handleTechnicalStackChange}>
+                    </lightning-checkbox-group>
+                </div>
+
+                <div class="slds-grid slds-gutters">
+                    <!-- Select All Button -->
+                    <div class="slds-col">
+                        <button class="slds-button" onclick={selectAll}>Select All</button>
+                    </div>
+                    <!-- Clear All Button -->
+                    <div class="slds-col slds-text-align_right">
+                        <button class="slds-button" onclick={clearAll}>Clear All</button>
+                    </div>
+                </div>
+                <!-- <p>{selectedValues}</p> -->
+            </template>
+
+            <template for:each={selectedTechnicalStack} for:item="selectedItem" for:index="index">
+                <lightning-pill style="margin-right:10px" key={selectedItem} label={selectedItem} onremove={handlePillRemove} name={index}>
+                    <lightning-icon icon-name="custom:custom11" alternative-text="Account"></lightning-icon>
+                </lightning-pill>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>
