@@ -116,27 +116,27 @@ export default class TestCmp extends LightningElement {
 
   handleInputChange(event) {
     const field = event.target.dataset.field;
-    console.log("Field-----" + field);
+    // console.log("Field-----" + field);
     this.resource[field] = event.target.value;
-    console.log("data-----" + this.resource[field]);
+    // console.log("data-----" + this.resource[field]);
   }
 
   handlePicklistChange(event) {
     const field = event.target.dataset.field;
-    console.log("Field----" + field);
+    // console.log("Field----" + field);
     this.resource[field] = event.detail.value;
-    console.log("data-----" + this.resource[field]);
+    // console.log("data-----" + this.resource[field]);
   }
 
   appdata;
   @api resourceId; // property of resourceId after insertion
   handleSaveClick() {
-    console.log("total data----" + this.resource);
-    console.log("Final resource data: " + JSON.stringify(this.resource));
+    // console.log("total data----" + this.resource);
+    // console.log("Final resource data: " + JSON.stringify(this.resource));
     this.appdata = JSON.stringify(this.resource);
     insertResourceRecord({ resourceData: this.appdata })
       .then((result) => {
-        console.log("Result: " + JSON.stringify(result));
+        // console.log("Result: " + JSON.stringify(result));
         this.resourceId = result.Id;
         console.log("Resource record ID=====: " + this.resourceId);
       })

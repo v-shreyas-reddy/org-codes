@@ -1,5 +1,6 @@
 <template>
   <lightning-card>
+    <!-- Requester Name -->
     <lightning-input
       label="Requester Name"
       type="text"
@@ -8,6 +9,7 @@
       value={resource.Requester_Name__c}
       required
     ></lightning-input>
+    <!-- Recruiter Name -->
     <lightning-input
       label="Recruiter Name"
       type="text"
@@ -16,6 +18,7 @@
       value={resource.Recruiter_Name__c}
       required
     ></lightning-input>
+    <!-- Employee Name (Replacement) -->
     <lightning-input
       label="Employee Name (Replacement)"
       type="text"
@@ -23,6 +26,7 @@
       data-field="Employee_Name_Replacement__c"
       value={resource.Employee_Name_Replacement__c}
     ></lightning-input>
+    <!-- Project Name -->
     <lightning-input
       label="Project Name"
       type="text"
@@ -30,6 +34,7 @@
       data-field="Project_Name__c"
       value={resource.Project_Name__c}
     ></lightning-input>
+    <!-- Recruitment Start Date -->
     <lightning-input
       label="Recruitment Start Date"
       type="date"
@@ -37,6 +42,7 @@
       data-field="Recruitment_Start_Date__c"
       value={resource.Recruitment_Start_Date__c}
     ></lightning-input>
+    <!-- Onboarding Date -->
     <lightning-input
       label="Onboarding Date"
       type="date"
@@ -45,12 +51,14 @@
       value={resource.Onboarding_Date__c}
       required
     ></lightning-input>
+    <!-- Comments -->
     <lightning-textarea
       label="Comments"
       onchange={handleInputChange}
       data-field="Comments__c"
       value={resource.Comments__c}
     ></lightning-textarea>
+    <!-- Positions -->
     <lightning-input
       label="Positions"
       type="number"
@@ -59,6 +67,7 @@
       value={resource.Positions__c}
       required
     ></lightning-input>
+    <!-- Billing Rate -->
     <lightning-input
       label="Billing Rate"
       type="number"
@@ -67,6 +76,7 @@
       value={resource.Billing_Rate__c}
       required
     ></lightning-input>
+    <!-- Currency -->
     <lightning-input
       label="Currency"
       type="number"
