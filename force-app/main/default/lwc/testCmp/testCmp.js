@@ -3,6 +3,9 @@ import { LightningElement, track, wire, api } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getPicklistValues, getObjectInfo } from "lightning/uiObjectInfoApi";
 
+import submitForApproval from "@salesforce/apex/ApprovalProcessController.submitForApproval";
+import getUsersInApprovalProcess from "@salesforce/apex/ApprovalProcessController.getUsersInApprovalProcess";
+
 // Apex class for insertion
 import insertResourceRecord from "@salesforce/apex/ResourceController.insertResource";
 import ACCOUNTS from "@salesforce/apex/AccountController.getAllAccounts";
@@ -185,10 +188,47 @@ export default class TestCmp extends LightningElement {
         this.resourceId = result.Id;
         console.log("Resource record ID=====: " + this.resourceId);
         this.showToast("Success", "Resource saved successfully", "success");
+        this.handleApproval();
       })
       .catch((error) => {
         console.log("Error while Saving=====> " + JSON.stringify(error));
         this.showToast("Resource Not Saved", error.body.message, "error");
       });
+  }
+
+  handleApproval() {
+    submitForApproval({ recordId: this.resourceId })
+      .then((data) => {
+        console.log("data from approval: " + data);
+        this.showModalBox();
+        // this.handleApprovalUsers();
+      })
+      .catch((error) => {
+        // Handle error, if needed
+        console.error("Error submitting for approval:" + JSON.stringify(error));
+      });
+  }
+
+  approvers = [];
+
+  // Wire the Apex method to fetch approvers when the recordId changes
+  handleApprovalUsers() {
+    getUsersInApprovalProcess({ recordId: this.resourceId })
+      .then((result) => {
+        console.log("users: " + result);
+        this.approvers = result;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  /* Modal popup logic */
+  @track isShowModal = false;
+  showModalBox() {
+    this.isShowModal = true;
+  }
+  hideModalBox() {
+    this.isShowModal = false;
   }
 }
