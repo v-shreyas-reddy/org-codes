@@ -2,6 +2,26 @@
   <lightning-card title="Resource Object" icon-name="standard:form">
     <div class="slds-grid slds-wrap slds-p-around_medium">
       <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+        <!-- Account lookup as picklist -->
+        <lightning-combobox
+          label="Account"
+          placeholder="-Select Account-"
+          options={accountOptions}
+          onchange={handlePicklistChange}
+          data-field="Account__c"
+          value={resource.Account__c}
+        ></lightning-combobox>
+
+        <!-- Opportunity lookup as picklist -->
+        <lightning-combobox
+          label="Opportunity"
+          placeholder="-Select Opportunity-"
+          options={oppOptions}
+          onchange={handlePicklistChange}
+          data-field="Opportunity__c"
+          value={resource.Opportunity__c}
+        ></lightning-combobox>
+
         <!-- Requester Name -->
         <lightning-input
           label="Requester Name"

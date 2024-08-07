@@ -5,6 +5,8 @@ import { getPicklistValues, getObjectInfo } from "lightning/uiObjectInfoApi";
 
 // Apex class for insertion
 import insertResourceRecord from "@salesforce/apex/ResourceController.insertResource";
+import ACCOUNTS from "@salesforce/apex/AccountController.getAllAccounts";
+import OPPORTUNITIES from "@salesforce/apex/OpportunityController.getAllOpps";
 
 import RESOURCE_OBJECT from "@salesforce/schema/Resource__c";
 
@@ -35,6 +37,38 @@ export default class TestCmp extends LightningElement {
         variant
       })
     );
+  }
+
+  //Opportunity lookup method
+  oppOptions = [];
+  @wire(OPPORTUNITIES)
+  wiredOpps({ error, data }) {
+    if (data) {
+      this.oppOptions = data.map((opportunity) => {
+        return {
+          label: opportunity.Name,
+          value: opportunity.Id
+        };
+      });
+    } else if (error) {
+      console.log("Error: " + JSON.stringify(error));
+    }
+  }
+
+  //Account lookup method
+  accountOptions = [];
+  @wire(ACCOUNTS)
+  wiredAccounts({ error, data }) {
+    if (data) {
+      this.accountOptions = data.map((account) => {
+        return {
+          label: account.Name,
+          value: account.Id
+        };
+      });
+    } else if (error) {
+      console.log("Error: " + JSON.stringify(error));
+    }
   }
 
   @wire(getObjectInfo, { objectApiName: RESOURCE_OBJECT })
