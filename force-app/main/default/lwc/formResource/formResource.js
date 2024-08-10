@@ -10,6 +10,24 @@ import insertResourceRecord from "@salesforce/apex/ResourceController.insertReso
 import submitForApproval from "@salesforce/apex/ApprovalProcessController.submitForApproval";
 import getUsersInApprovalProcess from "@salesforce/apex/ApprovalProcessController.getUsersInApprovalProcess";
 
+const objectApiName = "Resource__c";
+const fields = [
+  "Client_Interview_Required__c",
+  "Department__c",
+  "Location__c",
+  "Type__c",
+  "Employment_Type__c",
+  "Job_Location__c",
+  "Client_Name__c",
+  "Expertise_Area__c",
+  "Onsite_Interview_Required__c",
+  "Level_Grade__c",
+  "Priority__c",
+  "Title__c",
+  "Billability__c",
+  "Shift_Timings__c"
+];
+
 export default class FormResource extends LightningElement {
   @track picklistOptionsMap = {};
   @track resource = {};
@@ -71,23 +89,6 @@ export default class FormResource extends LightningElement {
   }
 
   fetchMultiplePicklistValues() {
-    const objectApiName = "Resource__c";
-    const fields = [
-      "Client_Interview_Required__c",
-      "Department__c",
-      "Location__c",
-      "Type__c",
-      "Employment_Type__c",
-      "Job_Location__c",
-      "Client_Name__c",
-      "Expertise_Area__c",
-      "Onsite_Interview_Required__c",
-      "Level_Grade__c",
-      "Priority__c",
-      "Title__c",
-      "Billability__c",
-      "Shift_Timings__c"
-    ];
     getMultiplePicklistValues({ objectName: objectApiName, fieldNames: fields })
       .then((result) => {
         this.picklistOptionsMap = {};
