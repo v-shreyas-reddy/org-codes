@@ -1,5 +1,5 @@
 <template>
-  <lightning-card title="Resource Object" icon-name="standard:form">
+  <lightning-card title="Dynamic Picklists Example" icon-name="custom:custom63">
     <div class="slds-grid slds-wrap slds-p-around_medium">
       <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
         <!-- Account lookup as picklist -->
@@ -107,175 +107,162 @@
           value={resource.Currency__c}
           required
         ></lightning-input>
-
-        <!-- Client_Interview_Required__c -->
-        <template if:true={resClientInterReq.data}>
-          <lightning-combobox
-            label="Client Interview Required"
-            options={resClientInterReq.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Client_Interview_Required__c"
-            value={resource.Client_Interview_Required__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <!-- Client Interview Required -->
+        <lightning-combobox
+          label="Client Interview Required"
+          placeholder="Select"
+          options={picklistOptionsMap.Client_Interview_Required__c}
+          onchange={handlePicklistChange}
+          data-field="Client_Interview_Required__c"
+          value={resource.Client_Interview_Required__c}
+          required
+        >
+        </lightning-combobox>
       </div>
       <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
         <!-- Department -->
-        <template if:true={resDepartment.data}>
-          <lightning-combobox
-            label="Department"
-            options={resDepartment.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Department__c"
-            value={resource.Department__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Department"
+          placeholder="Select"
+          options={picklistOptionsMap.Department__c}
+          onchange={handlePicklistChange}
+          data-field="Department__c"
+          value={resource.Department__c}
+          required
+        >
+        </lightning-combobox>
+
         <!-- Location -->
-        <template if:true={resLocation.data}>
-          <lightning-combobox
-            label="Location"
-            options={resLocation.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Location__c"
-            value={resource.Location__c}
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Location"
+          placeholder="Select"
+          options={picklistOptionsMap.Location__c}
+          onchange={handlePicklistChange}
+          data-field="Location__c"
+          value={resource.Location__c}
+        >
+        </lightning-combobox>
+
         <!-- Type -->
-        <template if:true={resType.data}>
-          <lightning-combobox
-            label="Type"
-            options={resType.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Type__c"
-            value={resource.Type__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Type"
+          placeholder="Select"
+          options={picklistOptionsMap.Type__c}
+          onchange={handlePicklistChange}
+          data-field="Type__c"
+          value={resource.Type__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Employment Type -->
-        <template if:true={resEmpType.data}>
-          <lightning-combobox
-            label="Employment Type"
-            options={resEmpType.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Employment_Type__c"
-            value={resource.Employment_Type__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Employment Type"
+          placeholder="Select"
+          options={picklistOptionsMap.Employment_Type__c}
+          onchange={handlePicklistChange}
+          data-field="Employment_Type__c"
+          value={resource.Employment_Type__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Job Location -->
-        <template if:true={resJobLoc.data}>
-          <lightning-combobox
-            label="Job Location"
-            options={resJobLoc.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Job_Location__c"
-            value={resource.Job_Location__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Job Location"
+          placeholder="Select"
+          options={picklistOptionsMap.Job_Location__c}
+          onchange={handlePicklistChange}
+          data-field="Job_Location__c"
+          value={resource.Job_Location__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Client Name -->
-        <template if:true={resClientName.data}>
-          <lightning-combobox
-            label="Client Name"
-            options={resClientName.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Client_Name__c"
-            value={resource.Client_Name__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Client Name"
+          placeholder="Select"
+          options={picklistOptionsMap.Client_Name__c}
+          onchange={handlePicklistChange}
+          data-field="Client_Name__c"
+          value={resource.Client_Name__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Expertise Area -->
-        <template if:true={resExpArea.data}>
-          <lightning-combobox
-            label="Expertise Area"
-            options={resExpArea.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Expertise_Area__c"
-            value={resource.Expertise_Area__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Client Name"
+          placeholder="Select"
+          options={picklistOptionsMap.Expertise_Area__c}
+          onchange={handlePicklistChange}
+          data-field="Expertise_Area__c"
+          value={resource.Expertise_Area__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Onsite Interview Required -->
-        <template if:true={resOnsiteInterReq.data}>
-          <lightning-combobox
-            label="Onsite Interview Required"
-            options={resOnsiteInterReq.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Onsite_Interview_Required__c"
-            value={resource.Onsite_Interview_Required__c}
-          ></lightning-combobox>
-        </template>
-        <!-- Level & Grade -->
-        <template if:true={resLevelGrade.data}>
-          <lightning-combobox
-            label="Level & Grade"
-            options={resLevelGrade.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Level_Grade__c"
-            value={resource.Level_Grade__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Onsite Interview Required"
+          placeholder="Select"
+          options={picklistOptionsMap.Onsite_Interview_Required__c}
+          onchange={handlePicklistChange}
+          data-field="Onsite_Interview_Required__c"
+          value={resource.Onsite_Interview_Required__c}
+        >
+        </lightning-combobox>
+        <!-- Level Grade -->
+        <lightning-combobox
+          label="Level & Grade"
+          placeholder="Select"
+          options={picklistOptionsMap.Level_Grade__c}
+          onchange={handlePicklistChange}
+          data-field="Level_Grade__c"
+          value={resource.Level_Grade__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Priority -->
-        <template if:true={resPriority.data}>
-          <lightning-combobox
-            label="Priority"
-            options={resPriority.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Priority__c"
-            value={resource.Priority__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Priority"
+          placeholder="Select"
+          options={picklistOptionsMap.Priority__c}
+          onchange={handlePicklistChange}
+          data-field="Priority__c"
+          value={resource.Priority__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Title -->
-        <template if:true={resTitle.data}>
-          <lightning-combobox
-            label="Title"
-            options={resTitle.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Title__c"
-            value={resource.Title__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Title"
+          placeholder="Select"
+          options={picklistOptionsMap.Title__c}
+          onchange={handlePicklistChange}
+          data-field="Title__c"
+          value={resource.Title__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Billability -->
-        <template if:true={resBillability.data}>
-          <lightning-combobox
-            label="Billability"
-            options={resBillability.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Billability__c"
-            value={resource.Billability__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Billability"
+          placeholder="Select"
+          options={picklistOptionsMap.Billability__c}
+          onchange={handlePicklistChange}
+          data-field="Billability__c"
+          value={resource.Billability__c}
+          required
+        >
+        </lightning-combobox>
         <!-- Shift Timings -->
-        <template if:true={resShiftTimings.data}>
-          <lightning-combobox
-            label="Shift Timings"
-            options={resShiftTimings.data.values}
-            placeholder="-Select-"
-            onchange={handlePicklistChange}
-            data-field="Shift_Timings__c"
-            value={resource.Shift_Timings__c}
-            required
-          ></lightning-combobox>
-        </template>
+        <lightning-combobox
+          label="Shift Timings"
+          placeholder="Select"
+          options={picklistOptionsMap.Shift_Timings__c}
+          onchange={handlePicklistChange}
+          data-field="Shift_Timings__c"
+          value={resource.Shift_Timings__c}
+          required
+        >
+        </lightning-combobox>
       </div>
     </div>
     <div slot="footer" class="slds-align_absolute-center">
@@ -287,7 +274,7 @@
       ></lightning-button>
     </div>
   </lightning-card>
-  <!-- modal start -->
+  !-- modal start -->
   <template if:true={isShowModal}>
     <section
       role="dialog"
