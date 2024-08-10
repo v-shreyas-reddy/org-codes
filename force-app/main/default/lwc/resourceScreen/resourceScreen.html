@@ -1,0 +1,28 @@
+<template>
+  <lightning-card title="Dynamic Picklists Example" icon-name="custom:custom63">
+    <div class="slds-p-around_medium">
+      <template if:true={picklistOptionsMap.Industry}>
+        <lightning-combobox
+          name="Industry"
+          label="Industry"
+          value={selectedValues.Industry}
+          placeholder="Select an Industry"
+          options={picklistOptionsMap.Industry}
+          onchange={handlePicklistChange}
+        >
+        </lightning-combobox>
+      </template>
+      <template if:true={picklistOptionsMap.Type}>
+        <lightning-combobox
+          name="Type"
+          label="Type"
+          value={selectedValues.Type}
+          placeholder="Select a Type"
+          options={picklistOptionsMap.Type}
+          onchange={handlePicklistChange}
+        >
+        </lightning-combobox>
+      </template>
+    </div>
+  </lightning-card>
+</template>

@@ -1,0 +1,215 @@
+<template>
+  <lightning-card title="Dynamic Picklists Example" icon-name="custom:custom63">
+    <div class="slds-grid slds-wrap slds-p-around_medium">
+      <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+        <!-- Requester Name -->
+        <lightning-input
+          label="Requester Name"
+          type="text"
+          onchange={handleInputChange}
+          data-field="Requester_Name__c"
+        ></lightning-input>
+        <!-- Recruiter Name -->
+        <lightning-input
+          label="Recruiter Name"
+          type="text"
+          onchange={handleInputChange}
+          data-field="Recruiter_Name__c"
+        ></lightning-input>
+        <!-- Employee Name (Replacement) -->
+        <lightning-input
+          label="Employee Name (Replacement)"
+          type="text"
+          onchange={handleInputChange}
+          data-field="Employee_Name_Replacement__c"
+        ></lightning-input>
+        <!-- Project Name -->
+        <lightning-input
+          label="Project Name"
+          type="text"
+          onchange={handleInputChange}
+          data-field="Project_Name__c"
+        ></lightning-input>
+        <!-- Recruitment Start Date -->
+        <lightning-input
+          label="Recruitment Start Date"
+          type="date"
+          onchange={handleInputChange}
+          data-field="Recruitment_Start_Date__c"
+        ></lightning-input>
+        <!-- Onboarding Date -->
+        <lightning-input
+          label="Onboarding Date"
+          type="date"
+          onchange={handleInputChange}
+          data-field="Onboarding_Date__c"
+        ></lightning-input>
+        <!-- Comments -->
+        <lightning-textarea
+          label="Comments"
+          onchange={handleInputChange}
+          data-field="Comments__c"
+        ></lightning-textarea>
+        <!-- Positions -->
+        <lightning-input
+          label="Positions"
+          type="number"
+          onchange={handleInputChange}
+          data-field="Positions__c"
+        ></lightning-input>
+        <!-- Billing Rate -->
+        <lightning-input
+          label="Billing Rate"
+          type="number"
+          onchange={handleInputChange}
+          data-field="Billing_Rate__c"
+        ></lightning-input>
+        <!-- Currency -->
+        <lightning-input
+          label="Currency"
+          type="number"
+          onchange={handleInputChange}
+          data-field="Currency__c"
+        ></lightning-input>
+        <!-- Client Interview Required -->
+        <lightning-combobox
+          label="Client Interview Required"
+          placeholder="Select"
+          options={picklistOptionsMap.Client_Interview_Required__c}
+          onchange={handlePicklistChange}
+          data-field="Client_Interview_Required__c"
+        >
+        </lightning-combobox>
+      </div>
+      <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+        <!-- Department -->
+        <lightning-combobox
+          label="Department"
+          placeholder="Select"
+          options={picklistOptionsMap.Department__c}
+          onchange={handlePicklistChange}
+          data-field="Department__c"
+        >
+        </lightning-combobox>
+
+        <!-- Location -->
+        <lightning-combobox
+          label="Location"
+          placeholder="Select"
+          options={picklistOptionsMap.Location__c}
+          onchange={handlePicklistChange}
+          data-field="Location__c"
+        >
+        </lightning-combobox>
+
+        <!-- Type -->
+        <lightning-combobox
+          label="Type"
+          placeholder="Select"
+          options={picklistOptionsMap.Type__c}
+          onchange={handlePicklistChange}
+          data-field="Type__c"
+        >
+        </lightning-combobox>
+        <!-- Employment Type -->
+        <lightning-combobox
+          label="Employment Type"
+          placeholder="Select"
+          options={picklistOptionsMap.Employment_Type__c}
+          onchange={handlePicklistChange}
+          data-field="Employment_Type__c"
+        >
+        </lightning-combobox>
+        <!-- Job Location -->
+        <lightning-combobox
+          label="Job Location"
+          placeholder="Select"
+          options={picklistOptionsMap.Job_Location__c}
+          onchange={handlePicklistChange}
+          data-field="Job_Location__c"
+        >
+        </lightning-combobox>
+        <!-- Client Name -->
+        <lightning-combobox
+          label="Client Name"
+          placeholder="Select"
+          options={picklistOptionsMap.Client_Name__c}
+          onchange={handlePicklistChange}
+          data-field="Client_Name__c"
+        >
+        </lightning-combobox>
+        <!-- Expertise Area -->
+        <lightning-combobox
+          label="Client Name"
+          placeholder="Select"
+          options={picklistOptionsMap.Expertise_Area__c}
+          onchange={handlePicklistChange}
+          data-field="Expertise_Area__c"
+        >
+        </lightning-combobox>
+        <!-- Onsite Interview Required -->
+        <lightning-combobox
+          label="Onsite Interview Required"
+          placeholder="Select"
+          options={picklistOptionsMap.Onsite_Interview_Required__c}
+          onchange={handlePicklistChange}
+          data-field="Onsite_Interview_Required__c"
+        >
+        </lightning-combobox>
+        <!-- Level Grade -->
+        <lightning-combobox
+          label="Level & Grade"
+          placeholder="Select"
+          options={picklistOptionsMap.Level_Grade__c}
+          onchange={handlePicklistChange}
+          data-field="Level_Grade__c"
+        >
+        </lightning-combobox>
+        <!-- Priority -->
+        <lightning-combobox
+          label="Priority"
+          placeholder="Select"
+          options={picklistOptionsMap.Priority__c}
+          onchange={handlePicklistChange}
+          data-field="Priority__c"
+        >
+        </lightning-combobox>
+        <!-- Title -->
+        <lightning-combobox
+          label="Title"
+          placeholder="Select"
+          options={picklistOptionsMap.Title__c}
+          onchange={handlePicklistChange}
+          data-field="Title__c"
+        >
+        </lightning-combobox>
+        <!-- Billability -->
+        <lightning-combobox
+          label="Billability"
+          placeholder="Select"
+          options={picklistOptionsMap.Billability}
+          onchange={handlePicklistChange}
+          data-field="Billability__c"
+        >
+        </lightning-combobox>
+        <!-- Shift Timings -->
+        <lightning-combobox
+          label="Shift Timings"
+          placeholder="Select"
+          options={picklistOptionsMap.Shift_Timings__c}
+          onchange={handlePicklistChange}
+          data-field="Shift_Timings__c"
+        >
+        </lightning-combobox>
+      </div>
+    </div>
+    <div slot="footer" class="slds-align_absolute-center">
+      <lightning-button
+        icon-name="utility:save"
+        variant="success"
+        label="Save"
+        onclick={handleSaveClick}
+      ></lightning-button>
+    </div>
+  </lightning-card>
+</template>
