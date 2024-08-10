@@ -1,16 +1,29 @@
 import { LightningElement, track, api, wire } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import getMultiplePicklistValues from "@salesforce/apex/PicklistController.getMultiplePicklistValues";
 
-import insertResourceRecord from "@salesforce/apex/ResourceController.insertResource";
+import getMultiplePicklistValues from "@salesforce/apex/PicklistController.getMultiplePicklistValues";
 import ACCOUNTS from "@salesforce/apex/AccountController.getAllAccounts";
 import OPPORTUNITIES from "@salesforce/apex/OpportunityController.getAllOpps";
+
+import insertResourceRecord from "@salesforce/apex/ResourceController.insertResource";
+
+import submitForApproval from "@salesforce/apex/ApprovalProcessController.submitForApproval";
+import getUsersInApprovalProcess from "@salesforce/apex/ApprovalProcessController.getUsersInApprovalProcess";
 
 export default class FormResource extends LightningElement {
   @track picklistOptionsMap = {};
   @track resource = {};
   oppOptions = [];
   accountOptions = [];
+
+  /* Modal popup logic */
+  @track isShowModal = false;
+  showModalBox() {
+    this.isShowModal = true;
+  }
+  hideModalBox() {
+    this.isShowModal = false;
+  }
 
   //Toast event function
   showToast(title, message, variant) {
@@ -113,11 +126,37 @@ export default class FormResource extends LightningElement {
         this.resourceId = result.Id;
         console.log("Resource record ID=====: " + this.resourceId);
         this.showToast("Success", "Resource saved successfully", "success");
-        // this.handleApproval();
+        this.handleApproval();
       })
       .catch((error) => {
         console.log("Error while Saving=====> " + JSON.stringify(error));
         this.showToast("Resource Not Saved", error.body.message, "error");
+      });
+  }
+
+  handleApproval() {
+    submitForApproval({ recordId: this.resourceId })
+      .then((data) => {
+        console.log("data from approval: " + data);
+        this.showModalBox();
+        this.handleApprovalUsers();
+      })
+      .catch((error) => {
+        // Handle error, if needed
+        console.error("Error submitting for approval:" + JSON.stringify(error));
+      });
+  }
+
+  // Wire the Apex method to fetch approvers when the recordId changes
+  approvers = [];
+  handleApprovalUsers() {
+    getUsersInApprovalProcess({ recordId: this.resourceId })
+      .then((result) => {
+        console.log("users: " + result);
+        this.approvers = result;
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 }
