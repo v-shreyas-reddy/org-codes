@@ -1,5 +1,7 @@
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, api } from "lwc";
 import getMultiplePicklistValues from "@salesforce/apex/PicklistController.getMultiplePicklistValues";
+
+import insertResourceRecord from "@salesforce/apex/ResourceController.insertResource";
 
 export default class FormResource extends LightningElement {
   @track picklistOptionsMap = {};
@@ -52,5 +54,25 @@ export default class FormResource extends LightningElement {
     this.resource[field] = event.detail.value;
     // console.log("Field:--- ", field, "data:---", this.resource[field]);
   }
-  handleSaveClick() {}
+
+  appdata;
+  @api resourceId; // property of resourceId after insertion
+  handleSaveClick() {
+    // console.log("total data----" + this.resource);
+    // console.log("Final resource data: " + JSON.stringify(this.resource));
+    this.appdata = JSON.stringify(this.resource);
+    insertResourceRecord({ resourceData: this.appdata })
+      .then((result) => {
+        // console.log("Result: " + JSON.stringify(result));
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.resourceId = result.Id;
+        console.log("Resource record ID=====: " + this.resourceId);
+        // this.showToast("Success", "Resource saved successfully", "success");
+        // this.handleApproval();
+      })
+      .catch((error) => {
+        console.log("Error while Saving=====> " + JSON.stringify(error));
+        // this.showToast("Resource Not Saved", error.body.message, "error");
+      });
+  }
 }
