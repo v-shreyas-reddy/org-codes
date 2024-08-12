@@ -1,3 +1,3 @@
 <aura:application extends= "force:slds">
-    <c:demoCmp></c:demoCmp>
+    <c:formResource></c:formResource>
 </aura:application>
