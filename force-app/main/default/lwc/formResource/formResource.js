@@ -1,9 +1,7 @@
-import { LightningElement, track, api, wire } from "lwc";
+import { LightningElement, track, api } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 
 import getMultiplePicklistValues from "@salesforce/apex/PicklistController.getMultiplePicklistValues";
-import ACCOUNTS from "@salesforce/apex/AccountController.getAllAccounts";
-import OPPORTUNITIES from "@salesforce/apex/OpportunityController.getAllOpps";
 
 import insertResourceRecord from "@salesforce/apex/ResourceController.insertResource";
 
@@ -31,8 +29,6 @@ const fields = [
 export default class FormResource extends LightningElement {
   @track picklistOptionsMap = {};
   @track resource = {};
-  oppOptions = [];
-  accountOptions = [];
 
   /* Modal popup logic */
   @track isShowModal = false;
@@ -52,36 +48,6 @@ export default class FormResource extends LightningElement {
         variant
       })
     );
-  }
-
-  //Opportunity lookup method
-  @wire(OPPORTUNITIES)
-  wiredOpps({ error, data }) {
-    if (data) {
-      this.oppOptions = data.map((opportunity) => {
-        return {
-          label: opportunity.Name,
-          value: opportunity.Id
-        };
-      });
-    } else if (error) {
-      console.log("Error: " + JSON.stringify(error));
-    }
-  }
-
-  //Account lookup method
-  @wire(ACCOUNTS)
-  wiredAccounts({ error, data }) {
-    if (data) {
-      this.accountOptions = data.map((account) => {
-        return {
-          label: account.Name,
-          value: account.Id
-        };
-      });
-    } else if (error) {
-      console.log("Error: " + JSON.stringify(error));
-    }
   }
 
   connectedCallback() {
@@ -114,6 +80,11 @@ export default class FormResource extends LightningElement {
     const field = event.target.dataset.field;
     this.resource[field] = event.detail.value;
     // console.log("Field:--- " + field + " data:--- " + this.resource[field]);
+  }
+
+  handleLookupRecord(event) {
+    const field = event.target.dataset.field;
+    this.resource[field] = event.detail.selectedRecord.Id;
   }
 
   appdata;

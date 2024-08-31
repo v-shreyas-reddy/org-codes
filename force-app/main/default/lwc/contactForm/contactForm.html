@@ -1,0 +1,547 @@
+<template>
+  <lightning-card title="Contact Form" icon-name="standard:contact">
+    <lightning-accordion
+      allow-multiple-sections-open
+      active-section-name={activeSections}
+    >
+      <lightning-accordion-section name="A" label="Personal Information">
+        <!-- Personal Information -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-input
+              label="First Name"
+              type="text"
+              required
+              onchange={handleInputChange}
+              data-field="FirstName"
+              value={contact.FirstName}
+            ></lightning-input>
+            <lightning-input
+              label="Last Name"
+              type="text"
+              required
+              onchange={handleInputChange}
+              data-field="LastName"
+              value={contact.LastName}
+            ></lightning-input>
+            <lightning-input
+              label="Date of Birth"
+              type="Date"
+              onchange={handleInputChange}
+              data-field="Birthdate"
+              value={contact.Birthdate}
+            ></lightning-input>
+          </div>
+          <div class="slds-col">
+            <lightning-combobox
+              label="Gender"
+              options={picklistOptionsMap.Gender__c}
+              onchange={handlePicklistChange}
+              data-field="Gender__c"
+              value={contact.Gender__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Nationality"
+              required
+              onchange={handleInputChange}
+              data-field="Nationality__c"
+              value={contact.Nationality__c}
+            ></lightning-input>
+            <lightning-input
+              label="Marital Status"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Marital_Status__c"
+              value={contact.Marital_Status__c}
+            ></lightning-input>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section name="B" label="Contact Information">
+        <!-- Contact Information -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-input
+              label="Email"
+              type="email"
+              required
+              onchange={handleInputChange}
+              data-field="Email"
+              value={contact.Email}
+            ></lightning-input>
+            <lightning-input
+              label="Phone"
+              type="phone"
+              required
+              onchange={handleInputChange}
+              data-field="Phone"
+              value={contact.Phone}
+            ></lightning-input>
+            <lightning-input
+              label="Mobile"
+              type="phone"
+              required
+              onchange={handleInputChange}
+              data-field="MobilePhone"
+              value={contact.MobilePhone}
+            ></lightning-input>
+          </div>
+          <div class="slds-col">
+            <lightning-input
+              label="Street"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Street__c"
+              value={contact.Street__c}
+            ></lightning-input>
+            <lightning-input
+              label="City"
+              type="text"
+              onchange={handleInputChange}
+              data-field="City__c"
+              value={contact.City__c}
+            ></lightning-input>
+            <div class="slds-grid slds-gutters">
+              <div class="slds-col">
+                <lightning-input
+                  label="State"
+                  type="text"
+                  onchange={handleInputChange}
+                  data-field="State__c"
+                  value={contact.State__c}
+                ></lightning-input>
+              </div>
+              <div class="slds-col">
+                <lightning-input
+                  label="Postal Code"
+                  type="Number"
+                  onchange={handleInputChange}
+                  data-field="Postal_Code__c"
+                  value={contact.Postal_Code__c}
+                ></lightning-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section name="C" label="Employment Details">
+        <!-- Employment Details -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-combobox
+              label="Employment Type"
+              options={picklistOptionsMap.Employment_Type__c}
+              onchange={handlePicklistChange}
+              data-field="Employment_Type__c"
+              value={contact.Employment_Type__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Current Employer"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Current_Employer__c"
+              value={contact.Current_Employer__c}
+            ></lightning-input>
+            <lightning-input
+              label="Job Title"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Title"
+              value={contact.Title}
+            ></lightning-input>
+          </div>
+          <div class="slds-col">
+            <lightning-combobox
+              label="Current Employee Type"
+              options={picklistOptionsMap.Current_Employee_Type__c}
+              onchange={handlePicklistChange}
+              data-field="Current_Employee_Type__c"
+              value={contact.Current_Employee_Type__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Date of Joining"
+              type="Date"
+              onchange={handleInputChange}
+              data-field="Date_of_Joining__c"
+              value={contact.Date_of_Joining__c}
+            ></lightning-input>
+            <lightning-input
+              label="Work Location"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Work_Location__c"
+              value={contact.Work_Location__c}
+            ></lightning-input>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section
+        name="D"
+        label="Current Employment & Salary Details"
+      >
+        <!-- Current Employment & Salary Details -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-input
+              label="Fixed Component"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Fixed_Component__c"
+              value={contact.Fixed_Component__c}
+            ></lightning-input>
+            <lightning-input
+              label="Variable Component"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Variable_Component__c"
+              value={contact.Variable_Component__c}
+            ></lightning-input>
+            <lightning-input
+              label="Total Benefits"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Total_Benefits__c"
+              value={contact.Total_Benefits__c}
+            ></lightning-input>
+            <lightning-textarea
+              label="Benefit Breakup"
+              onchange={handleInputChange}
+              data-field="Benefit_Breakup__c"
+              value={contact.Benefit_Breakup__c}
+            ></lightning-textarea>
+          </div>
+          <div class="slds-col">
+            <lightning-input
+              label="Work Location"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Work_Location_CE__c"
+              value={contact.Work_Location_CE__c}
+            ></lightning-input>
+            <lightning-combobox
+              label="Employee Status"
+              options={picklistOptionsMap.Employee_Status__c}
+              onchange={handlePicklistChange}
+              data-field="Employee_Status__c"
+              value={contact.Employee_Status__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Last working day"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Last_working_day_CE__c"
+              value={contact.Last_working_day_CE__c}
+            ></lightning-input>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section
+        name="E"
+        label="Previous Employment -1 and Salary Details"
+      >
+        <!-- Previous Employment -1 and Salary Details -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-input
+              label="Employer Name PE1"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Employer_Name_PE1__c"
+              value={contact.Employer_Name_PE1__c}
+            ></lightning-input>
+            <lightning-input
+              label="Fixed Component PE1"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Fixed_Component_PE1__c"
+              value={contact.Fixed_Component_PE1__c}
+            ></lightning-input>
+            <lightning-input
+              label="Variable Component PE1"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Variable_Component_PE1__c"
+              value={contact.Variable_Component_PE1__c}
+            ></lightning-input>
+            <lightning-input
+              label="Total Benefits PE1"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Total_Benefits_PE1__c"
+              value={contact.Total_Benefits_PE1__c}
+            ></lightning-input>
+          </div>
+          <div class="slds-col">
+            <lightning-textarea
+              label="Benefit Breakup PE1"
+              onchange={handleInputChange}
+              data-field="Benefit_Breakup_PE1__c"
+              value={contact.Benefit_Breakup_PE1__c}
+            ></lightning-textarea>
+            <lightning-input
+              label="Work Location PE1"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Work_Location_PE1__c"
+              value={contact.Work_Location_PE1__c}
+            ></lightning-input>
+            <lightning-combobox
+              label="Employee Status PE1"
+              options={picklistOptionsMap.Employee_Status_PE1__c}
+              onchange={handlePicklistChange}
+              data-field="Employee_Status_PE1__c"
+              value={contact.Employee_Status_PE1__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Last working day PE1"
+              type="Date"
+              onchange={handleInputChange}
+              data-field="Last_working_day_PE1__c"
+              value={contact.Last_working_day_PE1__c}
+            ></lightning-input>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section
+        name="F"
+        label="Previous Employment - 2 and Salary Details"
+      >
+        <!-- Previous Employment - 2 and Salary Details -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-input
+              label="Employer Name PE2"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Employer_Name_PE2__c"
+              value={contact.Employer_Name_PE2__c}
+            ></lightning-input>
+            <lightning-input
+              label="Fixed Component PE2"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Fixed_Component_PE2__c"
+              value={contact.Fixed_Component_PE2__c}
+            ></lightning-input>
+            <lightning-input
+              label="Variable Component PE2"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Variable_Component_PE2__c"
+              value={contact.Variable_Component_PE2__c}
+            ></lightning-input>
+            <lightning-input
+              label="Total Benefits PE2"
+              type="Number"
+              onchange={handleInputChange}
+              data-field="Total_Benefits_PE2__c"
+              value={contact.Total_Benefits_PE2__c}
+            ></lightning-input>
+          </div>
+          <div class="slds-col">
+            <lightning-textarea
+              label="Benefit Breakup PE2"
+              onchange={handleInputChange}
+              data-field="Benefit_Breakup_PE2__c"
+              value={contact.Benefit_Breakup_PE2__c}
+            ></lightning-textarea>
+            <lightning-input
+              label="Work Location PE2"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Work_Location_PE2__c"
+              value={contact.Work_Location_PE2__c}
+            ></lightning-input>
+            <lightning-combobox
+              label="Employee Status PE2"
+              options={picklistOptionsMap.Employee_Status__c}
+              onchange={handlePicklistChange}
+              data-field="Employee_Status_PE2__c"
+              value={contact.Employee_Status_PE2__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Last working day PE2"
+              type="Date"
+              onchange={handleInputChange}
+              data-field="Last_working_day_PE2__c"
+              value={contact.Last_working_day_PE2__c}
+            ></lightning-input>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section
+        name="G"
+        label="Bachelor's Degree - Educational Details"
+      >
+        <!-- Bachelor's Degree - Educational Details -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-combobox
+              label="Bachelor's Degree"
+              options={picklistOptionsMap.Bachelors_Degree__c}
+              onchange={handlePicklistChange}
+              data-field="Bachelors_Degree__c"
+              value={contact.Bachelors_Degree__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Bachelor's Specialization"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Bachelors_Specialization__c"
+              value={contact.Bachelors_Specialization__c}
+            ></lightning-input>
+            <lightning-input
+              label="Bachelor's Completation date"
+              type="Date"
+              onchange={handleInputChange}
+              data-field="Bachelors_Completation_date__c"
+              value={contact.Bachelors_Completation_date__c}
+            ></lightning-input>
+          </div>
+          <div class="slds-col">
+            <lightning-input
+              label="Bachelor's University"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Bachelors_University__c"
+              value={contact.Bachelors_University__c}
+            ></lightning-input>
+            <lightning-input
+              label="Bachelor's College"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Bachelors_College__c"
+              value={contact.Bachelors_College__c}
+            ></lightning-input>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section
+        name="H"
+        label="Master's Degree - Educational Details"
+      >
+        <!-- Master's Degree - Educational Details -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-combobox
+              label="Master's Degree"
+              options={picklistOptionsMap.Masters_Degree__c}
+              onchange={handlePicklistChange}
+              data-field="Masters_Degree__c"
+              value={contact.Masters_Degree__c}
+            ></lightning-combobox>
+            <lightning-input
+              label="Master's Specialization"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Masters_Specialization__c"
+              value={contact.Masters_Specialization__c}
+            ></lightning-input>
+            <lightning-input
+              label="Master's Completation date"
+              type="Date"
+              onchange={handleInputChange}
+              data-field="Masters_Completation_date__c"
+              value={contact.Masters_Completation_date__c}
+            ></lightning-input>
+          </div>
+          <div class="slds-col">
+            <lightning-input
+              label="Master's University"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Masters_University__c"
+              value={contact.Masters_University__c}
+            ></lightning-input>
+            <lightning-input
+              label="Master's College"
+              type="text"
+              onchange={handleInputChange}
+              data-field="Masters_College__c"
+              value={contact.Masters_College__c}
+            ></lightning-input>
+          </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-textarea
+              label="Comments"
+              onchange={handleInputChange}
+              data-field="Description"
+              value={contact.Description}
+            ></lightning-textarea>
+            <lightning-combobox
+              label="Highest Qualification"
+              options={picklistOptionsMap.Highest_Qualification__c}
+              onchange={handlePicklistChange}
+              data-field="Highest_Qualification__c"
+              value={contact.Highest_Qualification__c}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col">
+            <lightning-textarea
+              label="Certifications"
+              onchange={handleInputChange}
+              data-field="Certifications__c"
+              value={contact.Certifications__c}
+            ></lightning-textarea>
+            <lightning-textarea
+              label="Languages Known"
+              onchange={handleInputChange}
+              data-field="Languages__c"
+              value={contact.Languages__c}
+            ></lightning-textarea>
+          </div>
+        </div>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section name="I" label="Technical Skill Details">
+        <!-- Technical Skill Details -->
+        <div class="slds-grid slds-gutters">
+          <div class="slds-col">
+            <lightning-textarea
+              label="Primary"
+              onchange={handleInputChange}
+              data-field="Primary_Skill__c"
+              value={contact.Primary_Skill__c}
+            ></lightning-textarea>
+          </div>
+          <div class="slds-col">
+            <lightning-textarea
+              label="Secondary"
+              onchange={handleInputChange}
+              data-field="Secondary__c"
+              value={contact.Secondary__c}
+            ></lightning-textarea>
+          </div>
+          <div class="slds-col">
+            <lightning-textarea
+              label="Others"
+              onchange={handleInputChange}
+              data-field="Others__c"
+              value={contact.Others__c}
+            ></lightning-textarea>
+          </div>
+        </div>
+      </lightning-accordion-section>
+    </lightning-accordion>
+
+    <div slot="footer" class="slds-align_absolute-center">
+      <lightning-button
+        icon-name="utility:save"
+        variant="success"
+        label="Save"
+        onclick={handleSaveClick}
+      ></lightning-button>
+    </div>
+  </lightning-card>
+</template>

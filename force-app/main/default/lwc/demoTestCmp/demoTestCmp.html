@@ -1,0 +1,29 @@
+<template>
+  <article class="slds-card" style="padding: 20px">
+    <p style="color: blueviolet; font-size: 24px">
+      Custom Reusable Lookup Demo - LWC
+    </p>
+
+    <br />
+    <!-- Custom Lookup without Pre-Populate Value for account Object -->
+    <c-custom-lookup-lwc
+      icon-name="standard:account"
+      s-object-api-name="Resource__c"
+      label="My Fev Account"
+      onlookupupdate={lookupRecord}
+      placeholder="Search Account here..."
+    ></c-custom-lookup-lwc>
+  </article>
+</template>
+<!-- <template>
+  <c-look-up-reusable
+    label="Parent Account"
+    selected-icon-name="standard:account"
+    object-label="Account"
+    object-api-name="Account"
+    field-api-name="Name"
+    other-field-api-name="Industry"
+    onvalueselected={handleValueSelectedOnAccount}
+  >
+  </c-look-up-reusable>
+</template> -->

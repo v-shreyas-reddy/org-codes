@@ -1,26 +1,28 @@
 <template>
-  <lightning-card title="Dynamic Picklists Example" icon-name="custom:custom63">
+  <lightning-card title="Resource form" icon-name="custom:custom63">
     <div class="slds-grid slds-wrap slds-p-around_medium">
       <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
-        <!-- Account lookup as picklist -->
-        <lightning-combobox
+        <!-- Account lookup-->
+        <c-custom-lookup-lwc
+          icon-name="standard:account"
+          s-object-api-name="account"
           label="Account"
-          placeholder="-Select Account-"
-          options={accountOptions}
-          onchange={handlePicklistChange}
+          onlookupupdate={handleLookupRecord}
+          placeholder="Search Account here..."
           data-field="Account__c"
           value={resource.Account__c}
-        ></lightning-combobox>
+        ></c-custom-lookup-lwc>
 
-        <!-- Opportunity lookup as picklist -->
-        <lightning-combobox
+        <!-- Opportunity lookup -->
+        <c-custom-lookup-lwc
+          icon-name="standard:account"
+          s-object-api-name="opportunity"
           label="Opportunity"
-          placeholder="-Select Opportunity-"
-          options={oppOptions}
-          onchange={handlePicklistChange}
+          onlookupupdate={handleLookupRecord}
+          placeholder="Search Opportunity here..."
           data-field="Opportunity__c"
           value={resource.Opportunity__c}
-        ></lightning-combobox>
+        ></c-custom-lookup-lwc>
 
         <!-- Requester Name -->
         <lightning-input
