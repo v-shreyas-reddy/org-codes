@@ -1,3 +1,6 @@
+/* eslint-disable default-case */
+/* eslint-disable @lwc/lwc/no-async-operation */
+/* eslint-disable eqeqeq */
 import { LightningElement, api, wire } from "lwc";
 // import apex method from salesforce module
 import fetchLookupData from "@salesforce/apex/CustomLookupLwcController.fetchLookupData";
@@ -88,18 +91,21 @@ export default class CustomLookupLwc extends LightningElement {
 
   // method to clear selected lookup record
   handleRemove() {
-    this.searchKey = "";
-    this.selectedRecord = {};
-    this.lookupUpdatehandler(undefined); // update value on parent component as well from helper function
+    try {
+      this.searchKey = "";
+      this.selectedRecord = {};
+      this.lookupUpdatehandler(undefined);
 
-    // remove selected pill and display input field again
-    const searchBoxWrapper = this.template.querySelector(".searchBoxWrapper");
-    searchBoxWrapper.classList.remove("slds-hide");
-    searchBoxWrapper.classList.add("slds-show");
+      const searchBoxWrapper = this.template.querySelector(".searchBoxWrapper");
+      searchBoxWrapper.classList.remove("slds-hide");
+      searchBoxWrapper.classList.add("slds-show");
 
-    const pillDiv = this.template.querySelector(".pillDiv");
-    pillDiv.classList.remove("slds-show");
-    pillDiv.classList.add("slds-hide");
+      const pillDiv = this.template.querySelector(".pillDiv");
+      pillDiv.classList.remove("slds-show");
+      pillDiv.classList.add("slds-hide");
+    } catch (error) {
+      console.error("Error in handleRemove:", error);
+    }
   }
 
   // method to update selected record from search result

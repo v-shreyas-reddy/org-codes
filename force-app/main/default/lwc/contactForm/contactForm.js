@@ -67,6 +67,14 @@ export default class ContactForm extends LightningElement {
     this.contact[field] = event.detail.value;
   }
 
+  handleLookUp(event) {
+    const field = event.target.dataset.field;
+    this.contact[field] = event.detail.selectedRecord
+      ? event.detail.selectedRecord.Id
+      : null;
+    console.log(field + " : " + this.contact[field]);
+  }
+
   appData;
   @api contactId;
   handleSaveClick() {
@@ -76,11 +84,11 @@ export default class ContactForm extends LightningElement {
       .then((result) => {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.contactId = result.Id;
-        console.log("Resource record ID=====: " + this.contactId);
+        console.log("Contact record ID => " + this.contactId);
         this.showToast("Success", "Contact saved successfully", "success");
       })
       .catch((error) => {
-        console.log("Error while Saving=====> " + JSON.stringify(error));
+        console.log("Error while Saving => " + JSON.stringify(error));
         this.showToast("Contact Not Saved", error.body.message, "error");
       });
   }

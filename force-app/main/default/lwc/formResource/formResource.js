@@ -84,7 +84,9 @@ export default class FormResource extends LightningElement {
 
   handleLookupRecord(event) {
     const field = event.target.dataset.field;
-    this.resource[field] = event.detail.selectedRecord.Id;
+    this.resource[field] = event.detail.selectedRecord
+      ? event.detail.selectedRecord.Id
+      : null;
   }
 
   appdata;

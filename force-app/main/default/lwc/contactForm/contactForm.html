@@ -1,5 +1,16 @@
 <template>
   <lightning-card title="Contact Form" icon-name="standard:contact">
+    <!-- Resource lookup-->
+    <c-custom-lookup-lwc
+      icon-name="custom:custom103"
+      s-object-api-name="Resource__c"
+      label="Resource"
+      onlookupupdate={handleLookUp}
+      placeholder="Search"
+      data-field="Resource__c"
+      value={contact.Resource__c}
+    ></c-custom-lookup-lwc>
+
     <lightning-accordion
       allow-multiple-sections-open
       active-section-name={activeSections}
