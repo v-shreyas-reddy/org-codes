@@ -26,7 +26,7 @@ const fields = [
   "Shift_Timings__c"
 ];
 
-export default class FormResource extends LightningElement {
+export default class ResourceForm extends LightningElement {
   @track picklistOptionsMap = {};
   @track resource = {};
 
