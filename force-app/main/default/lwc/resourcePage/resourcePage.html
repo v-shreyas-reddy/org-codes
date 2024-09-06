@@ -1,0 +1,48 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <lightning-card title="Resource Page" icon-name="custom:custom63">
+    <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+      <!-- Search Input -->
+      <div class="slds-col slds-size_1-of-3">
+        <lightning-input
+          label="Search"
+          type="text"
+          placeholder="Requisition name, Code, Location"
+          value={searchKey}
+          onchange={handleSearchChange}
+        ></lightning-input>
+      </div>
+      <!-- Department Picklist -->
+      <div class="slds-col slds-size_1-of-3">
+        <lightning-combobox
+          label="Department"
+          placeholder="Select Department"
+          options={departmentOptions}
+          onchange={handleDepartment}
+        ></lightning-combobox>
+      </div>
+      <!-- Recruiter Picklist -->
+      <div class="slds-col slds-size_1-of-3">
+        <lightning-combobox
+          label="Recruiter"
+          placeholder="Select a Recruiter"
+          options={recruiterOptions}
+          onchange={handleRecruiterChange}
+        >
+        </lightning-combobox>
+      </div>
+    </div>
+
+    <!-- Datatable -->
+    <template if:true={resList}>
+      <lightning-datatable
+        data={resList}
+        columns={columns}
+        key-field="id"
+        hide-checkbox-column="true"
+        show-row-number-column
+      ></lightning-datatable>
+    </template>
+    <template if:true={error}>{error}</template>
+  </lightning-card>
+</template>
