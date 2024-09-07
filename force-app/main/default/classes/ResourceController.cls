@@ -16,14 +16,15 @@ public with sharing class ResourceController {
   public static List<Resource__c> getResources(
     String searchKey,
     String department,
-    String recruiter
+    String recruiter,
+    Integer limitSize,
+    Integer offsetSize
   ) {
     String searchPattern = '%' + searchKey + '%';
     String query = 'SELECT Id, Requester_Name__c, Department__c, Status__c, Location__c FROM Resource__c';
     List<String> whereConditions = new List<String>();
     List<Object> params = new List<Object>();
 
-    // Add conditions dynamically based on provided input fields
     if (String.isNotBlank(searchKey)) {
       whereConditions.add(
         '(Requester_Name__c LIKE :searchPattern OR Name LIKE :searchPattern OR Location__c LIKE :searchPattern)'
@@ -39,12 +40,12 @@ public with sharing class ResourceController {
       params.add('%' + recruiter + '%');
     }
 
-    // If there are any conditions, append them to the query
     if (!whereConditions.isEmpty()) {
       query += ' WHERE ' + String.join(whereConditions, ' AND ');
     }
 
-    // Execute the dynamic SOQL query and return results
+    query += ' LIMIT :limitSize OFFSET :offsetSize';
+
     return Database.query(query);
   }
 

@@ -44,5 +44,20 @@
       ></lightning-datatable>
     </template>
     <template if:true={error}>{error}</template>
+
+    <!-- Pagination Controls -->
+    <div class="slds-m-top_medium">
+      <lightning-button
+        label="Previous"
+        onclick={handlePreviousPage}
+        disabled={isFirstPage}
+      ></lightning-button>
+      <lightning-button
+        label="Next"
+        onclick={handleNextPage}
+        disabled={isLastPage}
+      ></lightning-button>
+      <div>Page {currentPage} of {totalPages}</div>
+    </div>
   </lightning-card>
 </template>
