@@ -11,20 +11,21 @@ public with sharing class ResourceController {
     return resourceData;
   }
 
-  // DataTable query Class
+  // DataTable query Class with Pagination Support
   @AuraEnabled(Cacheable=true)
-  public static List<Resource__c> getResources(
+  public static Map<String, Object> getResources(
     String searchKey,
     String department,
     String recruiter,
-    Integer limitSize,
-    Integer offsetSize
+    Integer pageSize,
+    Integer pageNumber
   ) {
     String searchPattern = '%' + searchKey + '%';
     String query = 'SELECT Id, Requester_Name__c, Department__c, Status__c, Location__c FROM Resource__c';
     List<String> whereConditions = new List<String>();
     List<Object> params = new List<Object>();
 
+    // Add conditions dynamically based on provided input fields
     if (String.isNotBlank(searchKey)) {
       whereConditions.add(
         '(Requester_Name__c LIKE :searchPattern OR Name LIKE :searchPattern OR Location__c LIKE :searchPattern)'
@@ -40,13 +41,33 @@ public with sharing class ResourceController {
       params.add('%' + recruiter + '%');
     }
 
+    // If there are any conditions, append them to the query
     if (!whereConditions.isEmpty()) {
       query += ' WHERE ' + String.join(whereConditions, ' AND ');
     }
 
-    query += ' LIMIT :limitSize OFFSET :offsetSize';
+    // Total record count query
+    String countQuery = 'SELECT COUNT() FROM Resource__c';
+    if (!whereConditions.isEmpty()) {
+      countQuery += ' WHERE ' + String.join(whereConditions, ' AND ');
+    }
 
-    return Database.query(query);
+    // Execute count query
+    Integer totalRecords = Database.countQuery(countQuery);
+
+    // Add pagination (OFFSET & LIMIT)
+    Integer offsetValue = (pageNumber - 1) * pageSize;
+    query += ' LIMIT :pageSize OFFSET :offsetValue';
+
+    // Execute the dynamic SOQL query and return results
+    List<Resource__c> resources = Database.query(query);
+
+    // Prepare the result to include both the data and total record count
+    Map<String, Object> result = new Map<String, Object>();
+    result.put('resources', resources);
+    result.put('totalRecords', totalRecords);
+
+    return result;
   }
 
   // Department picklist Fetch class

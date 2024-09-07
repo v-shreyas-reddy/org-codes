@@ -3,8 +3,6 @@ import getResources from "@salesforce/apex/ResourceController.getResources";
 import getDepartmentPicklistValues from "@salesforce/apex/ResourceController.getDepartmentPicklistValues";
 import getRecruiterOptions from "@salesforce/apex/ResourceController.getRecruiterOptions";
 
-const PAGE_SIZE = 10;
-
 const columns = [
   {
     label: "Requester Name",
@@ -21,24 +19,36 @@ const columns = [
 ];
 
 export default class ResourcePage extends LightningElement {
-  @track resList;
+  @track resList = [];
   @track columns = columns;
   @track error;
+
   @track departmentOptions = [];
   @track searchKey = "";
   @track selectedDepartment = "";
   @track recruiterValue = "";
+
   @track recruiterOptions = [];
 
+  // Pagination tracking
   @track currentPage = 1;
-  @track totalPages = 1;
+  @track pageSize = 10;
+  @track totalPages = 0;
+  @track pages = [];
+  @track totalRecords = 0;
+  @track firstRow = 1;
+  @track lastRow = 10;
+
+  @track rowsPerPageOptions = [
+    { label: "10", value: "10" },
+    { label: "20", value: "20" },
+    { label: "30", value: "30" }
+  ];
+
   @track isFirstPage = true;
   @track isLastPage = false;
 
-  connectedCallback() {
-    this.fetchDeptPickValues();
-  }
-
+  // Fetch recruiter options
   @wire(getRecruiterOptions)
   wiredRecruiters({ data, error }) {
     if (data) {
@@ -51,47 +61,13 @@ export default class ResourcePage extends LightningElement {
     }
   }
 
-  @wire(getResources, {
-    searchKey: "$searchKey",
-    department: "$selectedDepartment",
-    recruiter: "$recruiterValue",
-    limit: PAGE_SIZE,
-    offset: "$offset"
-  })
-  wiredResources({ error, data }) {
-    if (data) {
-      this.resList = data.map((row) => {
-        return {
-          ...row,
-          requesterLink: "/" + row.Id
-        };
-      });
-      this.totalPages = Math.ceil(data.totalCount / PAGE_SIZE);
-      this.isFirstPage = this.currentPage === 1;
-      this.isLastPage = this.currentPage === this.totalPages;
-    } else if (error) {
-      this.error = error;
-    }
+  // Fetch department picklist values on component load
+  connectedCallback() {
+    this.fetchDeptPickValues();
+    this.fetchData(); // Load the initial data when the component loads
   }
 
-  handleSearchChange(event) {
-    this.searchKey = event.target.value;
-    this.currentPage = 1;
-    this.fetchResources();
-  }
-
-  handleDepartment(event) {
-    this.selectedDepartment = event.detail.value;
-    this.currentPage = 1;
-    this.fetchResources();
-  }
-
-  handleRecruiterChange(event) {
-    this.recruiterValue = event.detail.value;
-    this.currentPage = 1;
-    this.fetchResources();
-  }
-
+  // Fetch department picklist values from Apex
   fetchDeptPickValues() {
     getDepartmentPicklistValues()
       .then((result) => {
@@ -105,37 +81,114 @@ export default class ResourcePage extends LightningElement {
       });
   }
 
-  get offset() {
-    return (this.currentPage - 1) * PAGE_SIZE;
-  }
-
-  fetchResources() {
-    // Re-fetch data based on current search, filters, and pagination
-    return getResources({
+  // Fetch data from Apex (resources with pagination)
+  fetchData() {
+    getResources({
       searchKey: this.searchKey,
       department: this.selectedDepartment,
       recruiter: this.recruiterValue,
-      limit: PAGE_SIZE,
-      offset: this.offset
-    }).then((data) => {
-      this.resList = data.map((row) => ({
-        ...row,
-        requesterLink: "/" + row.Id
-      }));
-    });
+      pageSize: this.pageSize,
+      pageNumber: this.currentPage
+    })
+      .then((result) => {
+        this.resList = result.resources.map((row) => {
+          return {
+            ...row,
+            requesterLink: "/" + row.Id
+          };
+        });
+
+        this.totalRecords = result.totalRecords;
+
+        // Calculate total pages
+        this.totalPages = Math.ceil(result.totalRecords / this.pageSize);
+
+        // Calculate the current range of rows being displayed
+        this.firstRow = (this.currentPage - 1) * this.pageSize + 1;
+        this.lastRow = Math.min(
+          this.currentPage * this.pageSize,
+          this.totalRecords
+        );
+
+        // Generate visible page numbers for pagination (max of 5 pages visible at a time)
+        let startPage = Math.max(1, this.currentPage - 2);
+        let endPage = Math.min(this.totalPages, this.currentPage + 2);
+
+        if (endPage - startPage < 4) {
+          if (startPage === 1) {
+            endPage = Math.min(startPage + 4, this.totalPages);
+          } else if (endPage === this.totalPages) {
+            startPage = Math.max(endPage - 4, 1);
+          }
+        }
+
+        this.pages = [];
+        for (let i = startPage; i <= endPage; i++) {
+          this.pages.push({
+            label: i,
+            class: i === this.currentPage ? "slds-button_brand" : ""
+          });
+        }
+
+        // Update button states for pagination
+        this.isFirstPage = this.currentPage === 1;
+        this.isLastPage = this.currentPage === this.totalPages;
+      })
+      .catch((error) => {
+        this.error = error;
+      });
   }
 
-  handlePreviousPage() {
+  // Handle when rows per page is changed
+  handleRowsPerPageChange(event) {
+    this.pageSize = parseInt(event.detail.value, 10);
+    this.currentPage = 1; // Reset to the first page when page size is changed
+    this.fetchData();
+  }
+
+  // Handle when search input changes
+  handleSearchChange(event) {
+    this.searchKey = event.target.value;
+    this.currentPage = 1;
+    this.fetchData();
+  }
+
+  // Handle when department picklist value changes
+  handleDepartment(event) {
+    this.selectedDepartment = event.detail.value;
+    this.currentPage = 1;
+    this.fetchData();
+  }
+
+  // Handle when recruiter picklist value changes
+  handleRecruiterChange(event) {
+    this.recruiterValue = event.detail.value;
+    this.currentPage = 1;
+    this.fetchData();
+  }
+
+  // Handle Previous button click for pagination
+  handlePrevious() {
     if (this.currentPage > 1) {
       this.currentPage -= 1;
-      this.fetchResources();
+      this.fetchData();
     }
   }
 
-  handleNextPage() {
+  // Handle Next button click for pagination
+  handleNext() {
     if (this.currentPage < this.totalPages) {
       this.currentPage += 1;
-      this.fetchResources();
+      this.fetchData();
+    }
+  }
+
+  // Handle direct page number click
+  handlePageChange(event) {
+    const selectedPage = parseInt(event.target.label, 10);
+    if (selectedPage !== this.currentPage) {
+      this.currentPage = selectedPage;
+      this.fetchData();
     }
   }
 }

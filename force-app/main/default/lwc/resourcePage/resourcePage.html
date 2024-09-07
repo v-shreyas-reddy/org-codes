@@ -28,8 +28,7 @@
           placeholder="Select a Recruiter"
           options={recruiterOptions}
           onchange={handleRecruiterChange}
-        >
-        </lightning-combobox>
+        ></lightning-combobox>
       </div>
     </div>
 
@@ -42,22 +41,62 @@
         hide-checkbox-column="true"
         show-row-number-column
       ></lightning-datatable>
-    </template>
-    <template if:true={error}>{error}</template>
 
-    <!-- Pagination Controls -->
-    <div class="slds-m-top_medium">
-      <lightning-button
-        label="Previous"
-        onclick={handlePreviousPage}
-        disabled={isFirstPage}
-      ></lightning-button>
-      <lightning-button
-        label="Next"
-        onclick={handleNextPage}
-        disabled={isLastPage}
-      ></lightning-button>
-      <div>Page {currentPage} of {totalPages}</div>
-    </div>
+      <!-- Pagination Controls with Left/Right Alignment in One Line -->
+      <div
+        class="slds-grid slds-grid_align-spread slds-m-top_medium slds-align-middle slds-p-horizontal_medium"
+      >
+        <!-- Left side: Rows per page selection and text -->
+        <div class="slds-grid slds-align-middle">
+          Rows per page:
+          <lightning-combobox
+            value={pageSize}
+            placeholder="Rows per page"
+            options={rowsPerPageOptions}
+            onchange={handleRowsPerPageChange}
+            class="slds-m-left_small"
+          ></lightning-combobox>
+          <span class="slds-m-left_medium"
+            >{firstRow}-{lastRow} of {totalRecords}</span
+          >
+        </div>
+
+        <!-- Right side: Pagination buttons in one line -->
+        <div class="slds-grid slds-align-middle">
+          <!-- Previous Button with Icon -->
+          <lightning-button-icon
+            icon-name="utility:chevronleft"
+            alternative-text="Previous"
+            onclick={handlePrevious}
+            disabled={isFirstPage}
+            class="slds-m-right_small"
+          ></lightning-button-icon>
+
+          <!-- Numbered Page Buttons with Spacing -->
+          <template for:each={pages} for:item="page">
+            <lightning-button
+              key={page.label}
+              label={page.label}
+              onclick={handlePageChange}
+              class={page.class}
+            ></lightning-button>
+          </template>
+
+          <!-- Next Button with Icon -->
+          <lightning-button-icon
+            icon-name="utility:chevronright"
+            alternative-text="Next"
+            onclick={handleNext}
+            disabled={isLastPage}
+            class="slds-m-left_small"
+          ></lightning-button-icon>
+        </div>
+      </div>
+    </template>
+
+    <!-- Error handling -->
+    <template if:true={error}>
+      <div class="slds-text-color_error slds-m-top_medium">{error}</div>
+    </template>
   </lightning-card>
 </template>
