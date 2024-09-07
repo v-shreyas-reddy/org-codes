@@ -43,6 +43,16 @@
         show-row-number-column
       ></lightning-datatable>
     </template>
+
+    <!-- No Data Found Message -->
+    <template if:false={resList.length}>
+      <p
+        class="slds-text-align_center slds-text-heading_medium slds-p-around_medium"
+      >
+        No data found
+      </p>
+    </template>
+
     <template if:true={error}>{error}</template>
   </lightning-card>
 </template>

@@ -19,7 +19,7 @@ const columns = [
 ];
 
 export default class ResourcePage extends LightningElement {
-  @track resList;
+  @track resList = [];
   @track columns = columns;
   @track error;
 
