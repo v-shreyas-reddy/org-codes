@@ -136,6 +136,7 @@ export default class ResourcePage extends LightningElement {
       })
       .catch((error) => {
         this.error = error;
+        console.log(JSON.stringify(error));
       });
   }
 

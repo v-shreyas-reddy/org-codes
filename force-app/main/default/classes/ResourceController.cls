@@ -1,16 +1,4 @@
 public with sharing class ResourceController {
-  // Record insertion Class
-  @AuraEnabled
-  public static Resource__c insertResource(Resource__c resourceData) {
-    try {
-      system.debug('Resource Data: ' + resourceData);
-      insert resourceData;
-    } catch (Exception e) {
-      throw new AuraHandledException(e.getMessage());
-    }
-    return resourceData;
-  }
-
   // DataTable query Class with Pagination Support
   @AuraEnabled(Cacheable=true)
   public static Map<String, Object> getResources(
@@ -104,5 +92,17 @@ public with sharing class ResourceController {
     recruiterList.sort();
 
     return recruiterList;
+  }
+
+  // Record insertion Class
+  @AuraEnabled
+  public static Resource__c insertResource(Resource__c resourceData) {
+    try {
+      system.debug('Resource Data: ' + resourceData);
+      insert resourceData;
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+    return resourceData;
   }
 }
