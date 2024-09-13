@@ -1,6 +1,37 @@
 <!-- sldsValidatorIgnore -->
 <template>
   <lightning-card title="Resource Page" icon-name="custom:custom63">
+    <div class="slds-grid slds-grid_align-space slds-p-horizontal_large">
+      <div>
+        <lightning-button
+          variant="base"
+          label="All"
+          onclick={handleFilterAll}
+        ></lightning-button>
+      </div>
+      <div>
+        <lightning-button
+          variant="base"
+          label="Approved"
+          onclick={handleFilterApproved}
+        ></lightning-button>
+      </div>
+      <div>
+        <lightning-button
+          variant="base"
+          label="Pending"
+          onclick={handleFilterPending}
+        ></lightning-button>
+      </div>
+      <div>
+        <lightning-button
+          variant="base"
+          label="Rejected"
+          onclick={handleFilterRejected}
+        ></lightning-button>
+      </div>
+    </div>
+
     <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
       <!-- Search Input -->
       <div class="slds-col slds-size_1-of-3">

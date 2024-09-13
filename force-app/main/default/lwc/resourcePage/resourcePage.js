@@ -1,5 +1,5 @@
 import { LightningElement, track, wire } from "lwc";
-import getResources from "@salesforce/apex/ResourceController.getResources";
+import getResources from "@salesforce/apex/DatatableResourceController.getResources";
 import getDepartmentPicklistValues from "@salesforce/apex/ResourceController.getDepartmentPicklistValues";
 import getRecruiterOptions from "@salesforce/apex/ResourceController.getRecruiterOptions";
 
@@ -14,8 +14,13 @@ const columns = [
     }
   },
   { label: "Department", fieldName: "Department__c" },
+  { label: "Location", fieldName: "Location__c" },
   { label: "Status", fieldName: "Status__c" },
-  { label: "Location", fieldName: "Location__c" }
+  {
+    label: "Approvers",
+    fieldName: "Approvers" // Updated field for Approvers data
+  },
+  { label: "Rejected", fieldName: "Rejected" } // Reference the Rejected field
 ];
 
 export default class ResourcePage extends LightningElement {
@@ -24,11 +29,12 @@ export default class ResourcePage extends LightningElement {
   @track error;
 
   @track departmentOptions = [];
+  @track recruiterOptions = [];
+
   @track searchKey = "";
   @track selectedDepartment = "";
   @track recruiterValue = "";
-
-  @track recruiterOptions = [];
+  @track selectedStatus = ""; // Default to show all statuses
 
   // Pagination tracking
   @track currentPage = 1;
@@ -81,39 +87,68 @@ export default class ResourcePage extends LightningElement {
       });
   }
 
-  // Fetch data from Apex (resources with pagination)
   fetchData() {
+    //console.log("Fetching data with selected status: ", this.selectedStatus);
     getResources({
       searchKey: this.searchKey,
       department: this.selectedDepartment,
       recruiter: this.recruiterValue,
+      status: this.selectedStatus, // Add status filter
       pageSize: this.pageSize,
       pageNumber: this.currentPage
     })
       .then((result) => {
+        // console.log("Fetched Data:", JSON.stringify(result.resources)); // Log the resources data
         this.resList = result.resources.map((row) => {
+          // console.log("Row Data:", row);
+          let approvers = [];
+          let rejecter = "";
+
+          // Check level-1 status and add level-1 approver
+          if (row.Level_1_Status__c === "Approved") {
+            approvers.push(row.Level_1_Approver__c);
+          }
+
+          // Check level-2 status and add level-2 approver
+          if (row.Level_2_Status__c === "Approved") {
+            approvers.push(row.Level_2_Approver__c);
+          }
+
+          // Check level-3 status and add level-3 approver
+          if (row.Level_3_Status__c === "Approved") {
+            approvers.push(row.Level_3_Approver__c);
+          }
+
+          // Rejecters logic - prioritize based on level (Level 1 -> Level 3)
+          if (row.Level_1_Status__c === "Rejected") {
+            rejecter = row.Level_1_Rejecter__c; // Level 1 rejecter
+          } else if (row.Level_2_Status__c === "Rejected") {
+            rejecter = row.Level_2_Rejecter__c; // Level 2 rejecter
+          } else if (row.Level_3_Status__c === "Rejected") {
+            rejecter = row.Level_3_Rejecter__c; // Level 3 rejecter
+          }
+
           return {
             ...row,
-            requesterLink: "/" + row.Id
+            requesterLink: "/" + row.Id,
+            Approvers: approvers.join(", "),
+            Rejected: rejecter // Populate the rejecter field
           };
         });
 
         this.totalRecords = result.totalRecords;
 
-        // Calculate total pages
+        // Calculate total pages and update pagination info
         this.totalPages = Math.ceil(result.totalRecords / this.pageSize);
-
-        // Calculate the current range of rows being displayed
         this.firstRow = (this.currentPage - 1) * this.pageSize + 1;
         this.lastRow = Math.min(
           this.currentPage * this.pageSize,
           this.totalRecords
         );
 
-        // Generate visible page numbers for pagination (max of 5 pages visible at a time)
+        // Handle pagination buttons logic
         let startPage = Math.max(1, this.currentPage - 2);
         let endPage = Math.min(this.totalPages, this.currentPage + 2);
-
         if (endPage - startPage < 4) {
           if (startPage === 1) {
             endPage = Math.min(startPage + 4, this.totalPages);
@@ -130,7 +165,6 @@ export default class ResourcePage extends LightningElement {
           });
         }
 
-        // Update button states for pagination
         this.isFirstPage = this.currentPage === 1;
         this.isLastPage = this.currentPage === this.totalPages;
       })
@@ -164,6 +198,30 @@ export default class ResourcePage extends LightningElement {
   // Handle when recruiter picklist value changes
   handleRecruiterChange(event) {
     this.recruiterValue = event.detail.value;
+    this.currentPage = 1;
+    this.fetchData();
+  }
+
+  handleFilterAll() {
+    this.selectedStatus = ""; // Show all records
+    this.currentPage = 1; // Reset to the first page
+    this.fetchData();
+  }
+
+  handleFilterApproved() {
+    this.selectedStatus = "Approved"; // Show only approved records
+    this.currentPage = 1;
+    this.fetchData();
+  }
+
+  handleFilterPending() {
+    this.selectedStatus = "Pending"; // Show only pending records
+    this.currentPage = 1;
+    this.fetchData();
+  }
+
+  handleFilterRejected() {
+    this.selectedStatus = "Rejected"; // Show only rejected records
     this.currentPage = 1;
     this.fetchData();
   }
